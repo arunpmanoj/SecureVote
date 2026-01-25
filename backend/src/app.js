@@ -8,6 +8,8 @@ require("./config/passport");
 
 const authRoutes = require("./routes/auth.routes");
 const votingRoutes = require("./routes/voting.routes");
+const candidateRoutes = require("./routes/candidate.routes");
+
 
 const app = express();
 
@@ -41,6 +43,7 @@ app.use(passport.session());
 app.use("/auth", authRoutes);
 app.use("/api", require("./routes/voter.routes"));
 app.use("/api", votingRoutes);
+app.use("/api/candidates", candidateRoutes);
 
 // Health check (VERY IMPORTANT for debugging)
 app.get("/health", (req, res) => {

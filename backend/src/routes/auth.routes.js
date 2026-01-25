@@ -3,6 +3,10 @@ const passport = require("passport");
 
 const router = express.Router();
 
+/* ===============================
+   🔐 GOOGLE OAUTH
+================================ */
+
 // Start Google OAuth
 router.get(
   "/google",
@@ -13,7 +17,7 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "http://localhost:5173"
+    failureRedirect: "http://localhost:5173",
   }),
   (req, res) => {
     console.log("✅ Google OAuth success, redirecting to frontend");
@@ -21,7 +25,27 @@ router.get(
   }
 );
 
-// Get current logged-in user
+/* ===============================
+   🔐 LINKEDIN OAUTH
+================================ */
+
+router.get("/linkedin", passport.authenticate("linkedin"));
+
+router.get(
+  "/linkedin/callback",
+  passport.authenticate("linkedin", {
+    failureRedirect: "http://localhost:5173",
+  }),
+  (req, res) => {
+    console.log("✅ LinkedIn OAuth success, redirecting to frontend");
+    res.redirect("http://localhost:5173/oauth-success");
+  }
+);
+
+/* ===============================
+   👤 GET CURRENT USER (CRITICAL)
+================================ */
+
 router.get("/me", (req, res) => {
   if (!req.user) {
     return res.status(401).json({ message: "Not authenticated" });
@@ -32,30 +56,29 @@ router.get("/me", (req, res) => {
     name: req.user.name,
     email: req.user.email,
     provider: req.user.provider,
+
     isVerified: req.user.isVerified || false,
     hasVoted: req.user.hasVoted || false,
-    isDisqualified: req.user.isDisqualified || false
+    isDisqualified: req.user.isDisqualified || false,
+
+    voterId: req.user.voterId || null,
+
+    // ✅ MOST IMPORTANT FIELD (FIXES BLANK CONFIRMATION PAGE)
+    votedCandidate: req.user.votedCandidate || null,
   });
 });
- 
-// Logout (optional but useful)
+
+/* ===============================
+   🚪 LOGOUT
+================================ */
+
 router.get("/logout", (req, res) => {
   req.logout(() => {
-    res.send("Logged out");
+    req.session.destroy(() => {
+      res.clearCookie("oauth-session");
+      res.send("Logged out");
+    });
   });
 });
-
-router.get("/linkedin", passport.authenticate("linkedin"));
-
-router.get(
-  "/linkedin/callback",
-  passport.authenticate("linkedin", {
-    failureRedirect: "http://localhost:5173"
-  }),
-  (req, res) => {
-    console.log("✅ LinkedIn OAuth success, redirecting to frontend");
-    res.redirect("http://localhost:5173/oauth-success");
-  }
-);
 
 module.exports = router;
