@@ -15,7 +15,7 @@ passport.deserializeUser(async (id, done) => {
     const user = await User.findById(id);
     done(null, user);
   } catch (err) {
-    done(err, null);
+    done(err);
   }
 });
 
@@ -28,8 +28,8 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 
-      // ✅ IMPORTANT: uses single env variable
-      callbackURL: `${process.env.OAUTH_CALLBACK_URL}/google/callback`,
+      // ✅ EXPLICIT callback URL
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     async (_accessToken, _refreshToken, profile, done) => {
       try {
@@ -50,7 +50,7 @@ passport.use(
 
         return done(null, user);
       } catch (err) {
-        return done(err, null);
+        return done(err);
       }
     }
   )
@@ -65,8 +65,8 @@ passport.use(
       clientID: process.env.LINKEDIN_CLIENT_ID,
       clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
 
-      // ✅ IMPORTANT: uses same base env variable
-      callbackURL: `${process.env.OAUTH_CALLBACK_URL}/linkedin/callback`,
+      // ✅ EXPLICIT callback URL
+      callbackURL: process.env.LINKEDIN_CALLBACK_URL,
       scope: ["openid", "profile", "email"],
       state: true,
     },
@@ -89,7 +89,7 @@ passport.use(
 
         return done(null, user);
       } catch (err) {
-        return done(err, null);
+        return done(err);
       }
     }
   )
