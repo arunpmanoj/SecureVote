@@ -173,37 +173,13 @@ VITE_API_BASE_URL=http://localhost:5000/api
 - **Time-Bound Voting**: Strict 5-minute windows prevent prolonged exposure and ensure fairness.
 - **No Client-Side Trust**: Frontend handles UI only; all critical operations are validated on the backend.
 - **Database Constraints**: MongoDB schemas enforce data integrity and prevent duplicate votes.
-
-## 🚀 Deployment
-
-### Backend (Render)
-1. Create a Render account and connect your GitHub repository.
-2. Set environment variables in Render dashboard.
-3. Deploy the backend service.
-4. Update OAuth redirect URLs to production domain.
-
-### Frontend (Vercel)
-1. Create a Vercel account and import your frontend project.
-2. Configure environment variables in Vercel dashboard.
-3. Deploy the frontend application.
-4. Update API base URL to production backend URL.
-
-### Database (MongoDB Atlas)
-1. Create a MongoDB Atlas cluster.
-2. Whitelist IP addresses and create database user.
-3. Update `MONGO_URI` with Atlas connection string.
-
-### OAuth Configuration
-- Update Google and LinkedIn OAuth app settings with production redirect URLs.
-- Ensure HTTPS is used in production for secure authentication.
-
+<!-- 
 ## 📸 Screenshots
 
-*Add screenshots here showing key application screens:*
 - Login page
 - Voter ID verification
 - Voting interface with timer
-- Results page
+- Results page -->
 
 ## 🔮 Future Improvements
 
