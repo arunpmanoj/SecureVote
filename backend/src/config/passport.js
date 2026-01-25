@@ -3,70 +3,96 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
 const User = require("../models/User");
 
-/* SESSION */
-passport.serializeUser((user, done) => done(null, user.id));
+/* =========================
+   SESSION HANDLING
+========================= */
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
 
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await User.findById(id);
     done(null, user);
   } catch (err) {
-    done(err);
+    done(err, null);
   }
 });
 
-/* GOOGLE */
+/* =========================
+   GOOGLE OAUTH
+========================= */
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:4000/auth/google/callback"
+
+      // ✅ IMPORTANT: uses single env variable
+      callbackURL: `${process.env.OAUTH_CALLBACK_URL}/google/callback`,
     },
-    async (_, __, profile, done) => {
-      const email = profile.emails?.[0]?.value;
+    async (_accessToken, _refreshToken, profile, done) => {
+      try {
+        const email = profile.emails?.[0]?.value;
 
-      let user = await User.findOne({ email });
+        let user = await User.findOne({ email });
 
-      if (!user) {
-        user = await User.create({
-          name: profile.displayName,
-          email,
-          provider: "google",
-          providerId: profile.id
-        });
+        if (!user) {
+          user = await User.create({
+            name: profile.displayName,
+            email,
+            provider: "google",
+            providerId: profile.id,
+            isVerified: false,
+            hasVoted: false,
+          });
+        }
+
+        return done(null, user);
+      } catch (err) {
+        return done(err, null);
       }
-
-      return done(null, user);
     }
   )
 );
 
-/* LINKEDIN (OPENID CONNECT) */
+/* =========================
+   LINKEDIN OAUTH
+========================= */
 passport.use(
   new LinkedInStrategy(
     {
       clientID: process.env.LINKEDIN_CLIENT_ID,
       clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
-      callbackURL: "http://localhost:4000/auth/linkedin/callback",
-      scope: ["openid", "profile"],
-      state: true
+
+      // ✅ IMPORTANT: uses same base env variable
+      callbackURL: `${process.env.OAUTH_CALLBACK_URL}/linkedin/callback`,
+      scope: ["openid", "profile", "email"],
+      state: true,
     },
-    async (_, __, profile, done) => {
-      let user = await User.findOne({
-        provider: "linkedin",
-        providerId: profile.id
-      });
-
-      if (!user) {
-        user = await User.create({
-          name: profile.displayName,
+    async (_accessToken, _refreshToken, profile, done) => {
+      try {
+        let user = await User.findOne({
           provider: "linkedin",
-          providerId: profile.id
+          providerId: profile.id,
         });
-      }
 
-      return done(null, user);
+        if (!user) {
+          user = await User.create({
+            name: profile.displayName,
+            provider: "linkedin",
+            providerId: profile.id,
+            isVerified: false,
+            hasVoted: false,
+          });
+        }
+
+        return done(null, user);
+      } catch (err) {
+        return done(err, null);
+      }
     }
   )
 );
+
+module.exports = passport;
