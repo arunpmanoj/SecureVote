@@ -11,17 +11,23 @@ import DisqualificationPage from "./pages/DisqualificationPage";
 import VotedUsersListPage from "./pages/VotedUsersListPage";
 import OAuthSuccess from "./pages/OAuthSuccess";
 
+/* =====================
+   USER STATE TYPE
+===================== */
 export interface UserState {
   isAuthenticated: boolean;
   isVerified: boolean;
   hasVoted: boolean;
   isDisqualified: boolean;
   voterId?: string;
-  votedCandidate?: string;
+  votedCandidate?: string; // ✅ REQUIRED
   voteTimestamp?: Date;
   userName?: string;
 }
 
+/* =====================
+   APP
+===================== */
 function App() {
   const [userState, setUserState] = useState<UserState>({
     isAuthenticated: false,
@@ -32,7 +38,9 @@ function App() {
 
   const [checkingSession, setCheckingSession] = useState(true);
 
-  /* 🔐 CHECK BACKEND SESSION ON APP LOAD */
+  /* =====================
+     🔐 CHECK SESSION
+  ====================== */
   useEffect(() => {
     const checkSession = async () => {
       try {
@@ -54,6 +62,9 @@ function App() {
           hasVoted: user.hasVoted,
           isDisqualified: user.isDisqualified,
           voterId: user.voterId,
+
+          // ✅ THIS FIXES BLANK CONFIRMATION PAGE
+          votedCandidate: user.votedCandidate || undefined,
         });
       } catch {
         console.log("No active session");
@@ -65,6 +76,9 @@ function App() {
     checkSession();
   }, []);
 
+  /* =====================
+     STATE UPDATER
+  ====================== */
   const updateUserState = (updates: Partial<UserState>) => {
     setUserState((prev) => ({ ...prev, ...updates }));
   };
@@ -73,14 +87,19 @@ function App() {
     return <div style={{ padding: 40 }}>Checking session...</div>;
   }
 
+  /* =====================
+     ROUTES
+  ====================== */
   return (
     <BrowserRouter>
       <Routes>
+        {/* OAuth */}
         <Route
           path="/oauth-success"
           element={<OAuthSuccess updateUserState={updateUserState} />}
         />
 
+        {/* Login */}
         <Route
           path="/"
           element={
@@ -92,6 +111,7 @@ function App() {
           }
         />
 
+        {/* Voter Verification */}
         <Route
           path="/verify"
           element={
@@ -109,7 +129,7 @@ function App() {
           }
         />
 
-        {/* ✅ UPDATED: pass userState */}
+        {/* Timer Warning */}
         <Route
           path="/timer-warning"
           element={
@@ -126,6 +146,7 @@ function App() {
           }
         />
 
+        {/* Voting */}
         <Route
           path="/voting"
           element={
@@ -144,6 +165,7 @@ function App() {
           }
         />
 
+        {/* Confirmation */}
         <Route
           path="/confirmation"
           element={
@@ -155,12 +177,16 @@ function App() {
           }
         />
 
+        {/* Results */}
         <Route
           path="/results"
           element={<LiveResultsPage userState={userState} />}
         />
 
+        {/* Disqualified */}
         <Route path="/disqualified" element={<DisqualificationPage />} />
+
+        {/* Admin */}
         <Route path="/voted-users" element={<VotedUsersListPage />} />
       </Routes>
     </BrowserRouter>
