@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import "./VoterIDVerificationPage.css";
 import type { UserState } from "../App";
+import { API_BASE_URL } from "../config";
 
 interface VoterIDVerificationPageProps {
   updateUserState: (updates: Partial<UserState>) => void;
@@ -51,9 +52,9 @@ export default function VoterIDVerificationPage({
         formData.append("document", file);
       }
 
-      const res = await fetch("http://localhost:4000/api/verify-voter", {
+      const res = await fetch(`${API_BASE_URL}/api/verify-voter`, {
         method: "POST",
-        credentials: "include", // 🔑 REQUIRED (session cookie)
+        credentials: "include",
         body: formData,
       });
 
@@ -114,10 +115,7 @@ export default function VoterIDVerificationPage({
                 className="file-upload-input"
               />
 
-              <label
-                htmlFor="file-upload"
-                className="file-upload-label-button"
-              >
+              <label htmlFor="file-upload" className="file-upload-label-button">
                 <svg
                   width="24"
                   height="24"

@@ -4,6 +4,7 @@ import Card from "../components/Card";
 import Button from "../components/Button";
 import "./PostVoteConfirmationPage.css";
 import type { UserState } from "../App";
+import { API_BASE_URL } from "../config";
 
 /* =====================
    TYPES
@@ -44,8 +45,8 @@ export default function PostVoteConfirmationPage({
     const loadCandidate = async () => {
       try {
         const res = await fetch(
-          `http://localhost:4000/api/candidates/${votedCandidateId}`,
-          { credentials: "include" }
+          `${API_BASE_URL}/api/candidates/${votedCandidateId}`,
+          { credentials: "include" },
         );
 
         if (!res.ok) {

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "../config";
 import {
   LineChart,
   Line,
@@ -35,7 +36,7 @@ export default function LiveResultsPage({ userState }: LiveResultsPageProps) {
   useEffect(() => {
     const loadResults = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/candidates", {
+        const res = await fetch(`${API_BASE_URL}/api/candidates`, {
           credentials: "include",
         });
 
@@ -110,9 +111,7 @@ export default function LiveResultsPage({ userState }: LiveResultsPageProps) {
                       </div>
                       <div className="result-candidate-role">{c.party}</div>
                     </div>
-                    <div className="result-vote-count">
-                      {c.voteCount} votes
-                    </div>
+                    <div className="result-vote-count">{c.voteCount} votes</div>
                   </div>
 
                   <div className="result-progress">
@@ -122,9 +121,7 @@ export default function LiveResultsPage({ userState }: LiveResultsPageProps) {
                     />
                   </div>
 
-                  <div className="result-percentage">
-                    {percent.toFixed(1)}%
-                  </div>
+                  <div className="result-percentage">{percent.toFixed(1)}%</div>
                 </Card>
               );
             })}

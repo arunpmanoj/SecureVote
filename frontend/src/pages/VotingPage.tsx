@@ -4,6 +4,7 @@ import Card from "../components/Card";
 import Button from "../components/Button";
 import "./VotingPage.css";
 import type { UserState } from "../App";
+import { API_BASE_URL } from "../config";
 
 /* =====================
    TYPES
@@ -29,7 +30,7 @@ export default function VotingPage({
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [selectedCandidate, setSelectedCandidate] = useState<string | null>(
-    null
+    null,
   );
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,7 +44,7 @@ export default function VotingPage({
   ====================== */
   useEffect(() => {
     const loadTimer = async () => {
-      const res = await fetch("http://localhost:4000/api/voting-timer", {
+      const res = await fetch(`${API_BASE_URL}/api/voting-timer`, {
         credentials: "include",
       });
 
@@ -84,10 +85,9 @@ export default function VotingPage({
   useEffect(() => {
     const loadCandidates = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/candidates", {
+        const res = await fetch(`${API_BASE_URL}/api/candidates`, {
           credentials: "include",
         });
-
         if (!res.ok) {
           throw new Error("Failed to fetch candidates");
         }
@@ -147,7 +147,7 @@ export default function VotingPage({
     setShowConfirmModal(false);
 
     try {
-      const res = await fetch("http://localhost:4000/api/vote", {
+      const res = await fetch(`${API_BASE_URL}/api/vote`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -192,9 +192,7 @@ export default function VotingPage({
             </div>
           </div>
         </div>
-        <div className="timer-bar-countdown">
-          {formatTime(timeRemaining)}
-        </div>
+        <div className="timer-bar-countdown">{formatTime(timeRemaining)}</div>
       </div>
 
       {timeRemaining <= 60 && (
@@ -243,9 +241,7 @@ export default function VotingPage({
             <p className="modal-message">
               Are you sure you want to vote for{" "}
               <strong>
-                {
-                  candidates.find((c) => c._id === selectedCandidate)?.name
-                }
+                {candidates.find((c) => c._id === selectedCandidate)?.name}
               </strong>
               ?
             </p>

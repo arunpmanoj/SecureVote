@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { UserState } from "../App";
+import { API_BASE_URL } from "../config";
 
 interface Props {
   updateUserState: (updates: Partial<UserState>) => void;
@@ -20,8 +21,8 @@ export default function OAuthSuccess({ updateUserState }: Props) {
         // Remove any lingering redirect toast
         toast.dismiss("oauth-redirect");
 
-        const res = await fetch("http://localhost:4000/auth/me", {
-          credentials: "include"
+        const res = await fetch(`${API_BASE_URL}/auth/me`, {
+          credentials: "include",
         });
 
         if (!res.ok) throw new Error("Not authenticated");
@@ -33,11 +34,11 @@ export default function OAuthSuccess({ updateUserState }: Props) {
           userName: user.name,
           isVerified: user.isVerified,
           hasVoted: user.hasVoted,
-          isDisqualified: user.isDisqualified
+          isDisqualified: user.isDisqualified,
         });
 
         toast.success(`Welcome, ${user.name}! 🎉`, {
-          id: "auth-success"
+          id: "auth-success",
         });
 
         navigate("/verify", { replace: true });
@@ -45,7 +46,7 @@ export default function OAuthSuccess({ updateUserState }: Props) {
         toast.dismiss("oauth-redirect");
 
         toast.error("Authentication failed. Please try again.", {
-          id: "auth-error"
+          id: "auth-error",
         });
 
         navigate("/", { replace: true });

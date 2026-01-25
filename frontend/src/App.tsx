@@ -10,6 +10,7 @@ import LiveResultsPage from "./pages/LiveResultsPage";
 import DisqualificationPage from "./pages/DisqualificationPage";
 import VotedUsersListPage from "./pages/VotedUsersListPage";
 import OAuthSuccess from "./pages/OAuthSuccess";
+import { API_BASE_URL } from "./config";
 
 /* =====================
    USER STATE TYPE
@@ -44,7 +45,7 @@ function App() {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const res = await fetch("http://localhost:4000/auth/me", {
+        const res = await fetch(`${API_BASE_URL}/auth/me`, {
           credentials: "include",
         });
 

@@ -3,6 +3,8 @@ import Card from "../components/Card";
 import Button from "../components/Button";
 import "./VotingTimerWarningPage.css";
 import type { UserState } from "../App";
+import { API_BASE_URL } from "../config";
+
 interface VotingTimerWarningPageProps {
   updateUserState: (updates: Partial<UserState>) => void;
   userState: UserState; // ✅ ADD THIS
@@ -15,7 +17,7 @@ export default function VotingTimerWarningPage({
   const navigate = useNavigate();
   const handleProceed = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/start-voting", {
+      const res = await fetch(`${API_BASE_URL}/api/start-voting`, {
         method: "POST",
         credentials: "include",
       });
