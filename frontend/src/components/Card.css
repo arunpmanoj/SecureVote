@@ -1,0 +1,18 @@
+.card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 3px 0 var(--color-card-shadow), 0 1px 2px -1px var(--color-card-shadow);
+  padding: var(--spacing-lg);
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 6px -1px var(--color-card-shadow), 0 2px 4px -2px var(--color-card-shadow);
+}
+
+/* Mobile responsive */
+@media (max-width: 767px) {
+  .card {
+    padding: var(--spacing-md);
+  }
+}

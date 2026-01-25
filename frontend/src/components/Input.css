@@ -1,0 +1,88 @@
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  width: 100%;
+}
+
+.input-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-neutral-text);
+}
+
+.required {
+  color: var(--color-danger);
+  margin-left: 2px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: var(--spacing-md);
+  color: var(--color-neutral-text-light);
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.input-field {
+  width: 100%;
+  padding: var(--spacing-md);
+  padding-left: var(--spacing-md);
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  transition: all 0.2s ease;
+  background-color: var(--color-white);
+}
+
+.input-field:focus {
+  border-color: var(--color-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.input-wrapper .input-icon + .input-field {
+  padding-left: calc(var(--spacing-md) + 24px + var(--spacing-sm));
+}
+
+.input-error .input-field {
+  border-color: var(--color-danger);
+}
+
+.input-error .input-field:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.input-disabled .input-field {
+  background-color: var(--color-neutral-bg);
+  cursor: not-allowed;
+}
+
+.input-error-text {
+  font-size: 14px;
+  color: var(--color-danger);
+}
+
+.input-helper-text {
+  font-size: 14px;
+  color: var(--color-neutral-text-light);
+}
+
+/* Mobile responsive */
+@media (max-width: 767px) {
+  .input-field {
+    font-size: 16px; /* Prevents zoom on iOS */
+    min-height: 44px; /* Touch-friendly */
+  }
+
+  .input-label {
+    font-size: 16px;
+  }
+}

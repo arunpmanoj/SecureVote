@@ -1,0 +1,95 @@
+.disqualification-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+}
+
+.disqualification-card {
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-lg);
+  text-align: center;
+}
+
+.disqualification-icon {
+  width: 120px;
+  height: 120px;
+  background: #fef2f2;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-danger);
+}
+
+.disqualification-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-neutral-text);
+  margin: 0;
+}
+
+.disqualification-subtitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-danger);
+  margin: 0;
+}
+
+.disqualification-explanation {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-md);
+  color: var(--color-neutral-text);
+  max-width: 500px;
+}
+
+.disqualification-explanation svg {
+  color: var(--color-danger);
+  flex-shrink: 0;
+}
+
+.disqualification-explanation p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.disqualification-actions {
+  width: 100%;
+  max-width: 400px;
+}
+
+@media (max-width: 767px) {
+  .disqualification-page {
+    padding: var(--spacing-md);
+    align-items: flex-start;
+    padding-top: var(--spacing-xl);
+  }
+
+  .disqualification-card {
+    max-width: 100%;
+  }
+
+  .disqualification-title {
+    font-size: 24px;
+  }
+
+  .disqualification-subtitle {
+    font-size: 20px;
+  }
+
+  .disqualification-icon {
+    width: 80px;
+    height: 80px;
+  }
+}

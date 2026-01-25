@@ -1,0 +1,340 @@
+.results-page {
+  min-height: 100vh;
+  background: var(--color-neutral-bg);
+  padding: var(--spacing-xl);
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-xl);
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.results-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-neutral-text);
+  margin: 0 0 var(--spacing-xs) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.results-title::before {
+  content: '✓';
+  width: 32px;
+  height: 32px;
+  background: #7c3aed;
+  color: var(--color-white);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.results-welcome {
+  font-size: 16px;
+  color: var(--color-neutral-text-light);
+  margin: 0;
+}
+
+.results-signout {
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.results-signout:hover {
+  text-decoration: underline;
+}
+
+.results-success-banner {
+  max-width: 1200px;
+  margin: 0 auto var(--spacing-xl) auto;
+  padding: var(--spacing-lg);
+  background: #d1fae5;
+  border: 1px solid var(--color-success);
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: flex-start;
+}
+
+.results-success-banner svg {
+  color: var(--color-success);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.results-success-banner div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.results-success-banner strong {
+  color: var(--color-success);
+  font-size: 18px;
+}
+
+.results-success-banner span {
+  color: var(--color-neutral-text);
+  font-size: 14px;
+}
+
+.results-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.results-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.results-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.results-section-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-neutral-text);
+  margin: 0;
+}
+
+.results-section-subtitle {
+  font-size: 14px;
+  color: var(--color-neutral-text-light);
+  margin: var(--spacing-xs) 0 0 0;
+}
+
+.auto-update-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-white);
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: var(--color-neutral-text);
+}
+
+.auto-update-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--color-success);
+  border-radius: var(--radius-full);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.auto-update-indicator svg {
+  color: var(--color-success);
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.results-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+@media (max-width: 767px) {
+  .results-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .results-page {
+    padding: var(--spacing-md);
+  }
+
+  .results-title {
+    font-size: 20px;
+  }
+
+  .results-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .graph-toggle {
+    width: 100%;
+  }
+
+  .toggle-button {
+    flex: 1;
+    min-height: 44px;
+  }
+}
+
+.result-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.result-card-voted {
+  border: 2px solid var(--color-primary);
+  background: #eff6ff;
+}
+
+.result-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+
+.result-candidate-info {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.result-candidate-photo {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  background: var(--color-neutral-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  border: 2px solid var(--color-primary);
+  flex-shrink: 0;
+}
+
+.result-candidate-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-neutral-text);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.result-candidate-role {
+  font-size: 14px;
+  color: var(--color-neutral-text-light);
+  margin-top: var(--spacing-xs);
+}
+
+.result-badge {
+  padding: 2px var(--spacing-sm);
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.result-badge-voted {
+  background: #7c3aed;
+  color: var(--color-white);
+}
+
+.result-badge-leading {
+  background: var(--color-success);
+  color: var(--color-white);
+}
+
+.result-vote-count {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-align: right;
+}
+
+.result-progress {
+  width: 100%;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.result-progress-bar {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.5s ease;
+}
+
+.result-progress-bar-sarah {
+  background: var(--color-success);
+}
+
+.result-progress-bar-james {
+  background: var(--color-primary);
+}
+
+.result-percentage {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-neutral-text);
+  text-align: right;
+}
+
+.graph-card {
+  padding: var(--spacing-lg);
+}
+
+.graph-toggle {
+  display: flex;
+  gap: var(--spacing-sm);
+  background: var(--color-white);
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius-md);
+  padding: 2px;
+}
+
+.toggle-button {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-neutral-text-light);
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.toggle-button:hover {
+  color: var(--color-neutral-text);
+}
+
+.toggle-active {
+  background: var(--color-primary);
+  color: var(--color-white);
+}

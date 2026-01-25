@@ -1,0 +1,130 @@
+.verify-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+}
+
+@media (max-width: 767px) {
+  .verify-page {
+    padding: var(--spacing-md);
+    align-items: flex-start;
+    padding-top: var(--spacing-xl);
+  }
+
+  .verify-title {
+    font-size: 24px;
+  }
+}
+
+.verify-card {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.verify-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #7c3aed;
+  margin: 0;
+  text-align: center;
+}
+
+.verify-explanation {
+  padding: var(--spacing-md);
+  background: #eff6ff;
+  border-radius: var(--radius-md);
+  color: var(--color-primary);
+  font-size: 16px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.verify-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.file-upload-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.file-upload-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-neutral-text);
+}
+
+.file-upload-area {
+  position: relative;
+}
+
+.file-upload-input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.file-upload-label-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xl);
+  border: 2px dashed #d1d5db;
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--color-neutral-text-light);
+  text-align: center;
+}
+
+.file-upload-label-button:hover {
+  border-color: var(--color-primary);
+  background: #f9fafb;
+  color: var(--color-primary);
+}
+
+.file-upload-hint {
+  font-size: 12px;
+  color: var(--color-neutral-text-light);
+}
+
+.file-upload-selected {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: #f0fdf4;
+  border: 1px solid var(--color-success);
+  border-radius: var(--radius-md);
+  color: var(--color-success);
+  font-size: 14px;
+}
+
+.privacy-disclaimer {
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: #eff6ff;
+  border-radius: var(--radius-md);
+  color: var(--color-primary);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.privacy-disclaimer svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
