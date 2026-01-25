@@ -2,17 +2,27 @@ const express = require("express");
 const router = express.Router();
 const Candidate = require("../models/Candidate");
 
-/* GET ALL CANDIDATES */
+/* ===============================
+   👥 GET ALL CANDIDATES (WITH VOTES)
+   Used by:
+   - VotingPage
+   - LiveResultsPage
+================================ */
 router.get("/", async (req, res) => {
   try {
-    const candidates = await Candidate.find();
+    const candidates = await Candidate.find().sort({ name: 1 });
     res.json(candidates);
-  } catch {
-    res.status(500).json({ message: "Server error" });
+  } catch (err) {
+    console.error("❌ Failed to fetch candidates:", err);
+    res.status(500).json({ message: "Failed to load candidates" });
   }
 });
 
-/* GET CANDIDATE BY ID */
+/* ===============================
+   🔍 GET SINGLE CANDIDATE BY ID
+   Used by:
+   - PostVoteConfirmationPage
+================================ */
 router.get("/:id", async (req, res) => {
   try {
     const candidate = await Candidate.findById(req.params.id);
@@ -22,8 +32,9 @@ router.get("/:id", async (req, res) => {
     }
 
     res.json(candidate);
-  } catch {
-    res.status(500).json({ message: "Server error" });
+  } catch (err) {
+    console.error("❌ Failed to fetch candidate:", err);
+    res.status(500).json({ message: "Failed to load candidate" });
   }
 });
 
