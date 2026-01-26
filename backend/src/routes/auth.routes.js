@@ -17,11 +17,13 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "http://localhost:5173",
+    failureRedirect: process.env.FRONTEND_URL,
   }),
   (req, res) => {
-    console.log("✅ Google OAuth success, redirecting to frontend");
-    res.redirect("http://localhost:5173/oauth-success");
+    console.log("✅ Google OAuth success");
+
+    // ✅ redirect to frontend dynamically
+    res.redirect(`${process.env.FRONTEND_URL}/oauth-success`);
   }
 );
 
@@ -29,16 +31,21 @@ router.get(
    🔐 LINKEDIN OAUTH
 ================================ */
 
-router.get("/linkedin", passport.authenticate("linkedin"));
+router.get(
+  "/linkedin",
+  passport.authenticate("linkedin")
+);
 
 router.get(
   "/linkedin/callback",
   passport.authenticate("linkedin", {
-    failureRedirect: "http://localhost:5173",
+    failureRedirect: process.env.FRONTEND_URL,
   }),
   (req, res) => {
-    console.log("✅ LinkedIn OAuth success, redirecting to frontend");
-    res.redirect("http://localhost:5173/oauth-success");
+    console.log("✅ LinkedIn OAuth success");
+
+    // ✅ redirect to frontend dynamically
+    res.redirect(`${process.env.FRONTEND_URL}/oauth-success`);
   }
 );
 
@@ -62,8 +69,6 @@ router.get("/me", (req, res) => {
     isDisqualified: req.user.isDisqualified || false,
 
     voterId: req.user.voterId || null,
-
-    // ✅ MOST IMPORTANT FIELD (FIXES BLANK CONFIRMATION PAGE)
     votedCandidate: req.user.votedCandidate || null,
   });
 });
@@ -76,7 +81,7 @@ router.get("/logout", (req, res) => {
   req.logout(() => {
     req.session.destroy(() => {
       res.clearCookie("oauth-session");
-      res.send("Logged out");
+      res.redirect(process.env.FRONTEND_URL);
     });
   });
 });
