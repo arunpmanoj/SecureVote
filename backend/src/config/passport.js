@@ -1,6 +1,6 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
+const OpenIDConnectStrategy = require("passport-openidconnect").Strategy;
 
 const User = require("../models/User");
 
@@ -52,39 +52,45 @@ passport.use(
   )
 );
 
+
 passport.use(
-  new LinkedInStrategy(
+  "linkedin-oidc",
+  new OpenIDConnectStrategy(
     {
+      issuer: "https://www.linkedin.com",
+      authorizationURL: "https://www.linkedin.com/oauth/v2/authorization",
+      tokenURL: "https://www.linkedin.com/oauth/v2/accessToken",
+      userInfoURL: "https://api.linkedin.com/v2/userinfo",
+
       clientID: process.env.LINKEDIN_CLIENT_ID,
       clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
       callbackURL: process.env.LINKEDIN_CALLBACK_URL,
-
-      // ✅ MUST MATCH LinkedIn app OAuth scopes
-      scope: ["openid", "profile", "email"],
-
-      state: true,
+      scope: "openid profile email",
     },
-    async (_accessToken, _refreshToken, profile, done) => {
+    async (issuer, sub, profile, jwtClaims, accessToken, refreshToken, done) => {
       try {
-        console.log("LinkedIn profile:", JSON.stringify(profile, null, 2)); // 🔍 Debug
+        console.log("LinkedIn OIDC profile:", profile);
+        console.log("LinkedIn sub:", sub);
+
+        const providerId = sub;
 
         const name =
-          profile.displayName ||
-          profile.username ||
-          profile.name?.givenName ||
-          profile.emails?.[0]?.value ||
+          profile?.displayName ||
+          profile?.name?.givenName ||
+          profile?.emails?.[0]?.value ||
+          jwtClaims?.name ||
           "LinkedIn User";
 
         let user = await User.findOne({
           provider: "linkedin",
-          providerId: profile.id,
+          providerId,
         });
 
         if (!user) {
           user = await User.create({
             name,
             provider: "linkedin",
-            providerId: profile.id,
+            providerId,
             isVerified: false,
             hasVoted: false,
           });
@@ -92,7 +98,7 @@ passport.use(
 
         return done(null, user);
       } catch (err) {
-        console.error("🔥 LinkedIn OAuth error:", err);
+        console.error("🔥 LinkedIn OIDC error:", err);
         return done(err);
       }
     }

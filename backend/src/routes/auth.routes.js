@@ -30,20 +30,19 @@ router.get(
   "/linkedin",
   passport.authenticate("linkedin")
 );
+router.get("/linkedin", passport.authenticate("linkedin-oidc"));
 
 router.get(
   "/linkedin/callback",
-  passport.authenticate("linkedin", {
+  passport.authenticate("linkedin-oidc", {
     failureRedirect: process.env.FRONTEND_URL,
+    session: true,
   }),
   (req, res) => {
-    console.log("✅ LinkedIn OAuth success");
-
+    console.log("✅ LinkedIn OIDC success");
     res.redirect(`${process.env.FRONTEND_URL}/oauth-success`);
   }
 );
-
-
 
 router.get("/me", (req, res) => {
   if (!req.user) {
