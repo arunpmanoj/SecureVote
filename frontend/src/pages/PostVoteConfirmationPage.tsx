@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import "./PostVoteConfirmationPage.css";
 import type { UserState } from "../App";
 import { API_BASE_URL } from "../config";
+import { LogOut } from "lucide-react";
 
 /* =====================
    TYPES
@@ -103,10 +104,27 @@ export default function PostVoteConfirmationPage({
           </Button>
 
           {/* 🔴 LOGOUT BUTTON */}
-          <div style={{ marginTop: 12 }}>
-            <Button variant="secondary" fullWidth onClick={onLogout}>
-              Logout
+          <div className="confirmation-actions">
+            <Button
+              variant="primary"
+              fullWidth
+              onClick={() => navigate("/results")}
+            >
+              View Results
             </Button>
+
+            {/* 🔴 LOGOUT BUTTON WITH RED ICON */}
+            <div style={{ marginTop: 12 }}>
+              <Button
+                variant="secondary"
+                fullWidth
+                onClick={onLogout}
+                icon={<LogOut size={18} color="#ef4444" />}
+                className="logout-danger"
+              >
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
       </Card>
