@@ -1,6 +1,7 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
+
 const User = require("../models/User");
 
 
@@ -57,13 +58,20 @@ passport.use(
     {
       clientID: process.env.LINKEDIN_CLIENT_ID,
       clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
-
       callbackURL: process.env.LINKEDIN_CALLBACK_URL,
-      scope: ["openid", "profile", "email"],
+      scope: ["r_liteprofile", "r_emailaddress"],
       state: true,
     },
     async (_accessToken, _refreshToken, profile, done) => {
       try {
+        console.log("LinkedIn profile:", JSON.stringify(profile, null, 2)); // 🔍 log everything
+
+        const name =
+          profile.displayName ||
+          profile.username ||
+          profile.emails?.[0]?.value ||
+          "LinkedIn User";
+
         let user = await User.findOne({
           provider: "linkedin",
           providerId: profile.id,
@@ -71,7 +79,7 @@ passport.use(
 
         if (!user) {
           user = await User.create({
-            name: profile.displayName,
+            name,
             provider: "linkedin",
             providerId: profile.id,
             isVerified: false,
@@ -81,10 +89,10 @@ passport.use(
 
         return done(null, user);
       } catch (err) {
+        console.error("🔥 LinkedIn OAuth error:", err);
         return done(err);
       }
     }
   )
 );
-
 module.exports = passport;
