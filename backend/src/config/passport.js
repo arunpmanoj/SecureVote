@@ -51,13 +51,11 @@ passport.use(
     }
   )
 );
-
-
 passport.use(
   "linkedin-oidc",
   new OpenIDConnectStrategy(
     {
-      issuer: "https://www.linkedin.com",
+      issuer: "https://www.linkedin.com/oauth",
       authorizationURL: "https://www.linkedin.com/oauth/v2/authorization",
       tokenURL: "https://www.linkedin.com/oauth/v2/accessToken",
       userInfoURL: "https://api.linkedin.com/v2/userinfo",
@@ -69,9 +67,6 @@ passport.use(
     },
     async (issuer, sub, profile, jwtClaims, accessToken, refreshToken, done) => {
       try {
-        console.log("LinkedIn OIDC profile:", profile);
-        console.log("LinkedIn sub:", sub);
-
         const providerId = sub;
 
         const name =
@@ -81,10 +76,7 @@ passport.use(
           jwtClaims?.name ||
           "LinkedIn User";
 
-        let user = await User.findOne({
-          provider: "linkedin",
-          providerId,
-        });
+        let user = await User.findOne({ provider: "linkedin", providerId });
 
         if (!user) {
           user = await User.create({
