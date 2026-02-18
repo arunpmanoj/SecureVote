@@ -52,24 +52,26 @@ passport.use(
   )
 );
 
-
 passport.use(
   new LinkedInStrategy(
     {
       clientID: process.env.LINKEDIN_CLIENT_ID,
       clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
       callbackURL: process.env.LINKEDIN_CALLBACK_URL,
-      scope: ["r_liteprofile", "r_emailaddress"],
+
+      // 🔴 IMPORTANT: start with only lite profile (email often causes failure if not approved)
+      scope: ["r_liteprofile"],
+
       state: true,
     },
     async (_accessToken, _refreshToken, profile, done) => {
       try {
-        console.log("LinkedIn profile:", JSON.stringify(profile, null, 2)); // 🔍 log everything
+        console.log("LinkedIn profile:", JSON.stringify(profile, null, 2)); // 🔍 Debug log
 
         const name =
           profile.displayName ||
           profile.username ||
-          profile.emails?.[0]?.value ||
+          profile.name?.givenName ||
           "LinkedIn User";
 
         let user = await User.findOne({
@@ -95,4 +97,5 @@ passport.use(
     }
   )
 );
+
 module.exports = passport;
