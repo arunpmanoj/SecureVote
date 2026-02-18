@@ -51,6 +51,7 @@ passport.use(
     }
   )
 );
+
 passport.use(
   "linkedin-oidc",
   new OpenIDConnectStrategy(
@@ -59,7 +60,6 @@ passport.use(
       authorizationURL: "https://www.linkedin.com/oauth/v2/authorization",
       tokenURL: "https://www.linkedin.com/oauth/v2/accessToken",
       userInfoURL: "https://api.linkedin.com/v2/userinfo",
-
       clientID: process.env.LINKEDIN_CLIENT_ID,
       clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
       callbackURL: process.env.LINKEDIN_CALLBACK_URL,
@@ -67,16 +67,21 @@ passport.use(
     },
     async (issuer, sub, profile, jwtClaims, accessToken, refreshToken, done) => {
       try {
-        const providerId = sub;
+        console.log("LinkedIn OIDC profile:", profile);
+
+        // ✅ FIX: providerId MUST be a string
+        const providerId = String(profile?.id || sub);
 
         const name =
           profile?.displayName ||
           profile?.name?.givenName ||
-          profile?.emails?.[0]?.value ||
           jwtClaims?.name ||
           "LinkedIn User";
 
-        let user = await User.findOne({ provider: "linkedin", providerId });
+        let user = await User.findOne({
+          provider: "linkedin",
+          providerId,
+        });
 
         if (!user) {
           user = await User.create({
@@ -96,4 +101,6 @@ passport.use(
     }
   )
 );
+
+
 module.exports = passport;
