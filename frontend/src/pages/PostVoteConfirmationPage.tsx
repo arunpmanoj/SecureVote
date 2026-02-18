@@ -5,8 +5,7 @@ import Button from "../components/Button";
 import "./PostVoteConfirmationPage.css";
 import type { UserState } from "../App";
 import { API_BASE_URL } from "../config";
-import { LogOut } from "lucide-react/dist/lucide-react";
-
+// using a small inline SVG for logout to avoid a problematic lucide-react import
 /* =====================
    TYPES
 ===================== */
@@ -111,7 +110,20 @@ export default function PostVoteConfirmationPage({
                 variant="secondary"
                 fullWidth
                 onClick={onLogout}
-                icon={<LogOut size={18} color="#ef4444" />}
+                icon={
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path d="M16 17L21 12L16 7" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M21 12H9" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M9 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                }
                 className="logout-danger"
               >
                 Logout
