@@ -20,16 +20,29 @@ router.get(
 
 // LINKEDIN (OIDC)
 router.get("/linkedin", passport.authenticate("linkedin-oidc"));
-
 router.get(
   "/linkedin/callback",
-  passport.authenticate("linkedin-oidc", {
-    failureRedirect: `${process.env.FRONTEND_URL}`,
-    session: true,
-  }),
-  (req, res) => {
-    console.log("✅ LinkedIn OAuth success");
-    res.redirect(`${process.env.FRONTEND_URL}/oauth-success`);
+  (req, res, next) => {
+    passport.authenticate("linkedin-oidc", (err, user, info) => {
+      if (err) {
+        console.error("🔥 LinkedIn callback error:", err);
+        return res.status(500).send("LinkedIn OAuth error. Check server logs.");
+      }
+      if (!user) {
+        console.error("🔥 LinkedIn callback failed, no user:", info);
+        return res.redirect(process.env.FRONTEND_URL);
+      }
+
+      req.logIn(user, (loginErr) => {
+        if (loginErr) {
+          console.error("🔥 Session login error:", loginErr);
+          return res.status(500).send("Session login failed");
+        }
+
+        console.log("✅ LinkedIn OAuth success");
+        return res.redirect(`${process.env.FRONTEND_URL}/oauth-success`);
+      });
+    })(req, res, next);
   }
 );
 
