@@ -1,6 +1,7 @@
 const express = require("express");
 const passport = require("passport");
 
+console.log("🔥 AUTH ROUTES LOADED - linkedin-oidc version");
 const router = express.Router();
 
 // GOOGLE
