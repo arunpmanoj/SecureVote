@@ -5,7 +5,7 @@ import Button from "../components/Button";
 import "./PostVoteConfirmationPage.css";
 import type { UserState } from "../App";
 import { API_BASE_URL } from "../config";
-import { LogOut } from "lucide-react";
+import { LogOut } from "lucide-react/dist/lucide-react";
 
 /* =====================
    TYPES
