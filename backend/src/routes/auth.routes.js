@@ -19,7 +19,12 @@ router.get(
 );
 
 // LINKEDIN (OIDC)
-router.get("/linkedin", passport.authenticate("linkedin-oidc"));
+router.get(
+  "/linkedin",
+  passport.authenticate("linkedin-oidc", {
+    prompt: "login",          // 👈 forces credential screen
+  })
+); 
 router.get(
   "/linkedin/callback",
   (req, res, next) => {
