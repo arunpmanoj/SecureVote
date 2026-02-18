@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     default: null,
   },
 
-  // ⏱️ RESETTABLE TIMER
+
   votingStartedAt: {
     type: Date,
     default: null,

@@ -5,12 +5,12 @@ const requireAuth = require("../middleware/requireAuth");
 
 const router = express.Router();
 
-/* FILE UPLOAD CONFIG */
+
 const upload = multer({
-  limits: { fileSize: 5 * 1024 * 1024 } // 5MB
+  limits: { fileSize: 5 * 1024 * 1024 }
 });
 
-/* VERIFY VOTER ID */
+
 router.post(
   "/verify-voter",
   requireAuth,
@@ -23,7 +23,7 @@ router.post(
         return res.status(400).json({ message: "Voter ID is required" });
       }
 
-      // 🔒 Check uniqueness
+      
       const existing = await User.findOne({ voterId });
       if (existing) {
         return res.status(409).json({
@@ -31,12 +31,12 @@ router.post(
         });
       }
 
-      // Save to logged-in user
+      
       req.user.voterId = voterId;
       req.user.isVerified = true;
 
       if (req.file) {
-        // For now just store filename (later S3 / Cloudinary)
+        
         req.user.voterIdDocumentUrl = req.file.originalname;
       }
 

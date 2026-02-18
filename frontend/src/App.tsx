@@ -21,7 +21,7 @@ export interface UserState {
   hasVoted: boolean;
   isDisqualified: boolean;
   voterId?: string;
-  votedCandidate?: string; // ✅ REQUIRED
+  votedCandidate?: string;
   voteTimestamp?: Date;
   userName?: string;
 }
@@ -36,7 +36,31 @@ function App() {
     hasVoted: false,
     isDisqualified: false,
   });
+  const handleLogout = async () => {
+    try {
+      await fetch(`${API_BASE_URL}/auth/logout`, {
+        method: "GET",
+        credentials: "include", // required for session cookies
+      });
+    } catch (err) {
+      console.error("Logout failed:", err);
+    } finally {
+      // Clear frontend auth state
+      setUserState({
+        isAuthenticated: false,
+        isVerified: false,
+        hasVoted: false,
+        isDisqualified: false,
+        voterId: undefined,
+        votedCandidate: undefined,
+        voteTimestamp: undefined,
+        userName: undefined,
+      });
 
+      // ✅ Redirect to HOME page
+      window.location.href = "/";
+    }
+  };
   const [checkingSession, setCheckingSession] = useState(true);
 
   /* =====================
@@ -64,7 +88,7 @@ function App() {
           isDisqualified: user.isDisqualified,
           voterId: user.voterId,
 
-          // ✅ THIS FIXES BLANK CONFIRMATION PAGE
+          // THIS FIXES BLANK CONFIRMATION PAGE
           votedCandidate: user.votedCandidate || undefined,
         });
       } catch {
@@ -99,7 +123,6 @@ function App() {
           path="/oauth-success"
           element={<OAuthSuccess updateUserState={updateUserState} />}
         />
-
         {/* Login */}
         <Route
           path="/"
@@ -111,7 +134,6 @@ function App() {
             )
           }
         />
-
         {/* Voter Verification */}
         <Route
           path="/verify"
@@ -129,7 +151,6 @@ function App() {
             )
           }
         />
-
         {/* Timer Warning */}
         <Route
           path="/timer-warning"
@@ -146,7 +167,6 @@ function App() {
             )
           }
         />
-
         {/* Voting */}
         <Route
           path="/voting"
@@ -165,28 +185,28 @@ function App() {
             )
           }
         />
-
         {/* Confirmation */}
         <Route
           path="/confirmation"
           element={
             userState.hasVoted ? (
-              <PostVoteConfirmationPage userState={userState} />
+              <PostVoteConfirmationPage
+                userState={userState}
+                onLogout={handleLogout} // 👈 pass logout here
+              />
             ) : (
               <Navigate to="/" replace />
             )
           }
         />
-
+         ̰
         {/* Results */}
         <Route
           path="/results"
           element={<LiveResultsPage userState={userState} />}
         />
-
         {/* Disqualified */}
         <Route path="/disqualified" element={<DisqualificationPage />} />
-
         {/* Admin */}
         <Route path="/voted-users" element={<VotedUsersListPage />} />
       </Routes>

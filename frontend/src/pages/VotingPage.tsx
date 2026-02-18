@@ -9,6 +9,7 @@ import { API_BASE_URL } from "../config";
 /* =====================
    TYPES
 ====================== */
+
 interface VotingPageProps {
   updateUserState: (updates: Partial<UserState>) => void;
   userState: UserState;

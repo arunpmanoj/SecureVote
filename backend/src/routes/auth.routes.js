@@ -3,17 +3,15 @@ const passport = require("passport");
 
 const router = express.Router();
 
-/* ===============================
-   🔐 GOOGLE OAUTH
-================================ */
 
-// Start Google OAuth
+
+
 router.get(
   "/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-// Google OAuth callback
+
 router.get(
   "/google/callback",
   passport.authenticate("google", {
@@ -22,14 +20,11 @@ router.get(
   (req, res) => {
     console.log("✅ Google OAuth success");
 
-    // ✅ redirect to frontend dynamically
     res.redirect(`${process.env.FRONTEND_URL}/oauth-success`);
   }
 );
 
-/* ===============================
-   🔐 LINKEDIN OAUTH
-================================ */
+
 
 router.get(
   "/linkedin",
@@ -44,14 +39,11 @@ router.get(
   (req, res) => {
     console.log("✅ LinkedIn OAuth success");
 
-    // ✅ redirect to frontend dynamically
     res.redirect(`${process.env.FRONTEND_URL}/oauth-success`);
   }
 );
 
-/* ===============================
-   👤 GET CURRENT USER (CRITICAL)
-================================ */
+
 
 router.get("/me", (req, res) => {
   if (!req.user) {
@@ -73,15 +65,11 @@ router.get("/me", (req, res) => {
   });
 });
 
-/* ===============================
-   🚪 LOGOUT
-================================ */
-
 router.get("/logout", (req, res) => {
   req.logout(() => {
     req.session.destroy(() => {
       res.clearCookie("oauth-session");
-      res.redirect(process.env.FRONTEND_URL);
+      res.status(200).json({ message: "Logged out" });
     });
   });
 });

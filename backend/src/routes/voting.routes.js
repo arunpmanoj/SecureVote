@@ -4,7 +4,7 @@ const router = express.Router();
 const User = require("../models/User");
 const Candidate = require("../models/Candidate");
 
-// 🔐 AUTH MIDDLEWARE
+
 const requireAuth = (req, res, next) => {
   if (!req.user) {
     return res.status(401).json({ message: "Not authenticated" });
@@ -12,9 +12,7 @@ const requireAuth = (req, res, next) => {
   next();
 };
 
-/* ===============================
-   ⏱️ START / RESUME VOTING TIMER
-================================ */
+
 router.post("/start-voting", requireAuth, async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
@@ -29,13 +27,13 @@ router.post("/start-voting", requireAuth, async (req, res) => {
 
     const now = new Date();
 
-    // ⏱️ EXPIRED TIMER → RESET
+    
     if (user.votingEndsAt && now > user.votingEndsAt) {
       user.votingStartedAt = null;
       user.votingEndsAt = null;
     }
 
-    // ⏳ ACTIVE TIMER → RETURN
+    
     if (user.votingStartedAt && user.votingEndsAt && now < user.votingEndsAt) {
       return res.json({
         votingStartedAt: user.votingStartedAt,
@@ -43,7 +41,7 @@ router.post("/start-voting", requireAuth, async (req, res) => {
       });
     }
 
-    // ▶️ START NEW TIMER
+    
     user.votingStartedAt = now;
     user.votingEndsAt = new Date(now.getTime() + 5 * 60 * 1000);
     await user.save();
@@ -58,9 +56,7 @@ router.post("/start-voting", requireAuth, async (req, res) => {
   }
 });
 
-/* ===============================
-   ⏱️ GET VOTING TIMER
-================================ */
+
 router.get("/voting-timer", requireAuth, async (req, res) => {
   const user = await User.findById(req.user._id);
 
@@ -74,7 +70,6 @@ router.get("/voting-timer", requireAuth, async (req, res) => {
 
   const now = new Date();
 
-  // ⏱️ EXPIRED → RESET
   if (now > user.votingEndsAt) {
     user.votingStartedAt = null;
     user.votingEndsAt = null;
@@ -88,9 +83,7 @@ router.get("/voting-timer", requireAuth, async (req, res) => {
   });
 });
 
-/* ===============================
-   🗳️ SUBMIT VOTE (FINAL)
-================================ */
+
 router.post("/vote", requireAuth, async (req, res) => {
   try {
     const { candidateId } = req.body;
@@ -117,7 +110,7 @@ router.post("/vote", requireAuth, async (req, res) => {
       return res.status(400).json({ message: "Invalid candidate" });
     }
 
-    // ✅ ATOMIC VOTE
+    
     candidate.voteCount += 1;
     await candidate.save();
 

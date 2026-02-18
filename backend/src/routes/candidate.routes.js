@@ -2,12 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Candidate = require("../models/Candidate");
 
-/* ===============================
-   👥 GET ALL CANDIDATES (WITH VOTES)
-   Used by:
-   - VotingPage
-   - LiveResultsPage
-================================ */
+
 router.get("/", async (req, res) => {
   try {
     const candidates = await Candidate.find().sort({ name: 1 });
@@ -18,11 +13,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-/* ===============================
-   🔍 GET SINGLE CANDIDATE BY ID
-   Used by:
-   - PostVoteConfirmationPage
-================================ */
+
 router.get("/:id", async (req, res) => {
   try {
     const candidate = await Candidate.findById(req.params.id);

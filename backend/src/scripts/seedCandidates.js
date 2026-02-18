@@ -1,4 +1,4 @@
-require("dotenv").config(); // 🔥 REQUIRED
+require("dotenv").config();
 
 const mongoose = require("mongoose");
 const Candidate = require("../models/Candidate");

@@ -3,9 +3,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
 const User = require("../models/User");
 
-/* =========================
-   SESSION HANDLING
-========================= */
+
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
@@ -19,16 +17,13 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-/* =========================
-   GOOGLE OAUTH
-========================= */
+
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 
-      // ✅ EXPLICIT callback URL
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     async (_accessToken, _refreshToken, profile, done) => {
@@ -56,16 +51,13 @@ passport.use(
   )
 );
 
-/* =========================
-   LINKEDIN OAUTH
-========================= */
+
 passport.use(
   new LinkedInStrategy(
     {
       clientID: process.env.LINKEDIN_CLIENT_ID,
       clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
 
-      // ✅ EXPLICIT callback URL
       callbackURL: process.env.LINKEDIN_CALLBACK_URL,
       scope: ["openid", "profile", "email"],
       state: true,

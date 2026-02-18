@@ -11,6 +11,7 @@ import { API_BASE_URL } from "../config";
 ===================== */
 interface PostVoteConfirmationPageProps {
   userState: UserState;
+  onLogout: () => void; // 👈 added
 }
 
 interface Candidate {
@@ -24,6 +25,7 @@ interface Candidate {
 ===================== */
 export default function PostVoteConfirmationPage({
   userState,
+  onLogout, // 👈 receive here
 }: PostVoteConfirmationPageProps) {
   const navigate = useNavigate();
   const [candidate, setCandidate] = useState<Candidate | null>(null);
@@ -55,7 +57,7 @@ export default function PostVoteConfirmationPage({
 
         const data = await res.json();
         setCandidate(data);
-      } catch (err) {
+      } catch {
         setError("Unable to load vote details.");
       } finally {
         setLoading(false);
@@ -68,17 +70,10 @@ export default function PostVoteConfirmationPage({
   /* =====================
      STATES
   ====================== */
-  if (loading) {
-    return <div style={{ padding: 40 }}>Loading confirmation…</div>;
-  }
-
-  if (error) {
-    return <div style={{ padding: 40 }}>{error}</div>;
-  }
-
-  if (!candidate) {
+  if (loading) return <div style={{ padding: 40 }}>Loading confirmation…</div>;
+  if (error) return <div style={{ padding: 40 }}>{error}</div>;
+  if (!candidate)
     return <div style={{ padding: 40 }}>No candidate data available.</div>;
-  }
 
   /* =====================
      UI
@@ -106,6 +101,13 @@ export default function PostVoteConfirmationPage({
           >
             View Results
           </Button>
+
+          {/* 🔴 LOGOUT BUTTON */}
+          <div style={{ marginTop: 12 }}>
+            <Button variant="secondary" fullWidth onClick={onLogout}>
+              Logout
+            </Button>
+          </div>
         </div>
       </Card>
     </div>
