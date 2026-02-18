@@ -105,14 +105,6 @@ export default function PostVoteConfirmationPage({
 
           {/* 🔴 LOGOUT BUTTON */}
           <div className="confirmation-actions">
-            <Button
-              variant="primary"
-              fullWidth
-              onClick={() => navigate("/results")}
-            >
-              View Results
-            </Button>
-
             {/* 🔴 LOGOUT BUTTON WITH RED ICON */}
             <div style={{ marginTop: 12 }}>
               <Button
