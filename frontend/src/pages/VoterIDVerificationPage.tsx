@@ -15,6 +15,7 @@ export default function VoterIDVerificationPage({
   updateUserState,
 }: VoterIDVerificationPageProps) {
   const [voterId, setVoterId] = useState("");
+  const [linkedinUrl, setLinkedinUrl] = useState(""); // 👈 NEW
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -48,6 +49,7 @@ export default function VoterIDVerificationPage({
     try {
       const formData = new FormData();
       formData.append("voterId", voterId.trim());
+      formData.append("linkedinProfileUrl", linkedinUrl.trim()); // 👈 SEND TO BACKEND
       if (file) {
         formData.append("document", file);
       }
@@ -97,6 +99,16 @@ export default function VoterIDVerificationPage({
             error={error}
             helperText="Enter your government-issued Voter ID number"
             required
+            disabled={loading}
+          />
+
+          {/* 👇 NEW LINKEDIN URL FIELD */}
+          <Input
+            label="LinkedIn Profile URL (Optional)"
+            placeholder="https://www.linkedin.com/in/your-profile"
+            value={linkedinUrl}
+            onChange={setLinkedinUrl}
+            helperText="Provide your LinkedIn profile URL for identity verification"
             disabled={loading}
           />
 

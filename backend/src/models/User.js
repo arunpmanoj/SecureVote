@@ -6,6 +6,12 @@ const userSchema = new mongoose.Schema({
   provider: String,
   providerId: String,
 
+  // 👇 ADD THIS
+  linkedinProfileUrl: {
+    type: String,
+    default: null,
+  },
+
   isVerified: {
     type: Boolean,
     default: false,
@@ -27,7 +33,6 @@ const userSchema = new mongoose.Schema({
     ref: "Candidate",
     default: null,
   },
-
 
   votingStartedAt: {
     type: Date,
