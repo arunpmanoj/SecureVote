@@ -13,6 +13,7 @@ import {
 import Card from "../components/Card";
 import "./LiveResultsPage.css";
 import type { UserState } from "../App";
+import { useNavigate } from "react-router-dom";
 
 interface LiveResultsPageProps {
   userState: UserState;
@@ -29,6 +30,8 @@ export default function LiveResultsPage({ userState }: LiveResultsPageProps) {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [graphData, setGraphData] = useState<any[]>([]);
   const [timeRange, setTimeRange] = useState<"recent" | "full">("recent");
+
+  const navigate = useNavigate(); // ✅ must be inside component
 
   /* =====================
      🔗 LOAD LIVE RESULTS
@@ -87,6 +90,29 @@ export default function LiveResultsPage({ userState }: LiveResultsPageProps) {
           <strong>Your vote has been successfully submitted.</strong>
         </div>
       )}
+
+      {/* 🔗 REDIRECT CARD */}
+      <Card
+        className="results-redirect-card"
+        onClick={() => navigate("/voted-users")}
+        style={{ cursor: "pointer", marginBottom: 16 }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <div>
+            <h3 style={{ margin: 0 }}>View Voted Users</h3>
+            <p style={{ margin: 0, opacity: 0.7 }}>
+              See the list of participants who have already voted
+            </p>
+          </div>
+          <span style={{ fontSize: 18 }}>→</span>
+        </div>
+      </Card>
 
       <div className="results-content">
         <div className="results-section">
