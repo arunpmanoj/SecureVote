@@ -53,4 +53,17 @@ router.post(
   }
 );
 
+router.get("/voted-users", requireAuth, async (req, res) => {
+  try {
+    const users = await User.find({ hasVoted: true })
+      .select("name email voterId votedCandidate")
+      .populate("votedCandidate", "name party");
+
+    res.json(users);
+  } catch (err) {
+    console.error("Error fetching voted users:", err);
+    res.status(500).json({ message: "Failed to fetch voted users" });
+  }
+});
+ 
 module.exports = router;
