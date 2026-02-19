@@ -19,6 +19,8 @@ router.post(
   upload.single("document"),
   async (req, res) => {
     try {
+      console.log("REQ BODY:", req.body);
+
       const { voterId, linkedinProfileUrl } = req.body;
 
       if (!voterId) {
@@ -58,7 +60,7 @@ router.post(
       console.error("Verification failed:", err);
       res.status(500).json({ message: "Verification failed" });
     }
-  }
+  },
 );
 
 /**
@@ -67,8 +69,9 @@ router.post(
  */
 router.get("/voted-users", requireAuth, async (req, res) => {
   try {
-    const users = await User.find({ hasVoted: true })
-      .select("name voterId linkedinProfileUrl");
+    const users = await User.find({ hasVoted: true }).select(
+      "name voterId linkedinProfileUrl",
+    );
 
     res.json(users);
   } catch (err) {
